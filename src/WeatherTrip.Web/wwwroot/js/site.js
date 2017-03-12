@@ -8,6 +8,8 @@ var columns = 2;
 var rows = 2;
 var items;
 var rectangles = [];
+var daysFromNow = 0;
+var date = '';
 
 function getRandomColorString() {
     var colorNumber = Math.random() * (256 * 256 * 256 - 1);
@@ -15,6 +17,12 @@ function getRandomColorString() {
     color = color.substr(color.length - 6);
 
     return '#' + color;
+}
+
+function changeDay() {
+    daysFromNow = document.getElementById('days').value;
+
+    createRectangles();
 }
 
 function updateColors(event) {
@@ -59,6 +67,9 @@ function loadWeathers() {
 
 function createRectangles() {
     clearRectangles();
+    date = items[0][0].data.forecasts[daysFromNow].date;
+
+    document.getElementById('date').innerText = date;
 
     for (var col = 0; col < columns; ++col) {
         for (var row = 0; row < rows; ++row) {
@@ -68,10 +79,10 @@ function createRectangles() {
                 var data = item.data;
                 var rect = item.rect;
 
-                if (parseFloat(data.forecasts[0].minTemp) < parseFloat(document.getElementById('minTemp').value)) {
+                if (parseFloat(data.forecasts[daysFromNow].minTemp) < parseFloat(document.getElementById('minTemp').value)) {
                     color = tooCold;
                 }
-                else if (parseFloat(data.forecasts[0].maxTemp) > parseFloat(document.getElementById('maxTemp').value)) {
+                else if (parseFloat(data.forecasts[daysFromNow].maxTemp) > parseFloat(document.getElementById('maxTemp').value)) {
                     color = tooHot;
                 }
                 else {
@@ -79,9 +90,9 @@ function createRectangles() {
                 }
 
                 var contentString = 'Location: ' + data.location.name + '\n' +
-                    'Condition: ' + data.forecasts[0].condition + '\n' +
-                    'Min Temp: ' + data.forecasts[0].minTemp + '\n' +
-                    'Max Temp: ' + data.forecasts[0].maxTemp;
+                    'Condition: ' + data.forecasts[daysFromNow].condition + '\n' +
+                    'Min Temp: ' + data.forecasts[daysFromNow].minTemp + '\n' +
+                    'Max Temp: ' + data.forecasts[daysFromNow].maxTemp;
 
                 var rectangle = new google.maps.Rectangle({
                     strokeColor: '#FF0000',
@@ -175,6 +186,11 @@ function initMap() {
 
     rowSlider.addEventListener('change', updateSliders)
     colSlider.addEventListener('change', updateSliders)
+
+    var daysSlider = document.getElementById('days');
+
+    daysSlider.addEventListener('change', changeDay)
+    daysSlider.addEventListener('input', changeDay)
 
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 9,
