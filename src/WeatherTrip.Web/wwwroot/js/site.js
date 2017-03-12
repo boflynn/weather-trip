@@ -7,6 +7,7 @@ var map;
 var columns = 2;
 var rows = 2;
 var items;
+var images = [];
 var rectangles = [];
 var daysFromNow = 0;
 var date = '';
@@ -41,6 +42,12 @@ function clearRectangles() {
         var mapRectangle = rectangles.pop();
 
         mapRectangle.setMap(null);
+    }
+
+    while (images.length > 0) {
+        var mapImage = images.pop();
+
+        mapImage.setMap(null);
     }
 }
 
@@ -78,6 +85,7 @@ function createRectangles() {
 
                 var data = item.data;
                 var rect = item.rect;
+                var coords = item.coords;
 
                 if (parseFloat(data.forecasts[daysFromNow].minTemp) < parseFloat(document.getElementById('minTemp').value)) {
                     color = tooCold;
@@ -111,7 +119,20 @@ function createRectangles() {
                     extraBoData: contentString
                 });
 
+                var image = {
+                    url: data.forecasts[daysFromNow].iconUrl,
+                    size: new google.maps.Size(64, 64),
+                    anchor: new google.maps.Point(32, 32)
+                }
+
+                var imageMarker = new google.maps.Marker({
+                    position: { lat: coords.latitude, lng: coords.longitude },
+                    map: map,
+                    icon: image
+                });
+
                 rectangles.push(rectangle);
+                images.push(imageMarker);
 
                 google.maps.event.addListener(rectangle, 'click', function (event) {
                     alert(rectangle.extraBoData);
@@ -153,6 +174,10 @@ function loadWeather(row, col) {
                         "right": rectRight,
                         "bottom": rectBottom,
                         "left": rectLeft
+                    },
+                    "coords": {
+                        "latitude": centerLat,
+                        "longitude": centerLng
                     }
                 };
 

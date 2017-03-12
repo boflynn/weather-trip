@@ -47,6 +47,7 @@ namespace WeatherTrip.Web.Controllers
                 forecast.MaxTemp = (double)day["maxtemp_f"];
                 forecast.MinTemp = (double)day["mintemp_f"];
                 forecast.Condition = (string)day["condition"]["text"];
+                forecast.IconUrl = (string)day["condition"]["icon"];
 
                 weather.Forecasts.Add(forecast);
             }

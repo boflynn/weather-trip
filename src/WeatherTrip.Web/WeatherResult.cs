@@ -28,7 +28,7 @@ namespace WeatherTrip.Web
         public double MinTemp { get; set; }
 
         public string Condition { get; set; }
+
+        public string IconUrl { get; set; }
     }
-
-
 }
