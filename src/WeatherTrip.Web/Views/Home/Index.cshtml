@@ -1,30 +1,32 @@
 <div id="map"></div>
 <div id="inputs">
-    min:<input type="text" id="minTemp" value="50"><br/> max:
-    <input type="text" id="maxTemp" value="70">
+    min:<input type="text" id="minTemp" value="50"><br/>
+    max:<input type="text" id="maxTemp" value="70"><br/>
+    rows: <input type="range" id="rows" value="2" min="1" max="10"/><br/>
+    cols: <input type="range" id="cols" value="2" min="1" max="10"/><br/>
 </div>
 
 @section Header {
-<style>
-    #map {
-        height: 500px;
-    }
-    
-    html,
-    body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    
-    body>nav {
-        visibility: hidden;
-    }
-</style>
+    <style>
+        #map {
+            height: 500px;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body>nav {
+            visibility: hidden;
+        }
+    </style>
 }
 
 @section Scripts {
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiETHqw4fyHZZPRMZYx2AD22eCrPhv8AU&callback=initMap">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiETHqw4fyHZZPRMZYx2AD22eCrPhv8AU&callback=initMap">
 
-</script>
+    </script>
 }
