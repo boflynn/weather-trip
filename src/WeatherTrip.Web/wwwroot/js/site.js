@@ -175,6 +175,18 @@ function loadWeather(row, col) {
 }
 
 function initMap() {
+    navigator.geolocation.getCurrentPosition(initMapWithPositionSuccess, initMapWithPositionFailure);
+}
+
+function initMapWithPositionSuccess(position) {
+    initMapWithPosition(position.coords.latitude, position.coords.longitude, 9);
+}
+
+function initMapWithPositionFailure(position) {
+    initMapWithPosition(39.8282, -98.5795, 5);
+}
+
+function initMapWithPosition(latitude, longitude, zoom) {
     var minTemp = document.getElementById('minTemp');
     var maxTemp = document.getElementById('maxTemp');
 
@@ -193,8 +205,8 @@ function initMap() {
     daysSlider.addEventListener('input', changeDay)
 
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 9,
-        center: { lat: 34.038891, lng: -84.296173 },
+        zoom: zoom,
+        center: { lat: latitude, lng: longitude },
         mapTypeId: 'terrain'
     });
 
