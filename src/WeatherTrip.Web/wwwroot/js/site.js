@@ -45,7 +45,7 @@ function initMap() {
                     var centerLng = (rectLeft + rectRight) / 2;
 
                     // var url = 'http://localhost:5001/api/weather/30076';// + centerLat + ',' + centerLng;
-                    var url = 'http://localhost:5000/api/weather/' + centerLat + ',' + centerLng;
+                    var url = '/api/weather/' + centerLat + ',' + centerLng;
                     var request = new XMLHttpRequest();
                     request.open('GET', url, true);
 
