@@ -1,0 +1,30 @@
+<div id="map"></div>
+<div id="inputs">
+    min:<input type="text" id="minTemp" value="50"><br/> max:
+    <input type="text" id="maxTemp" value="70">
+</div>
+
+@section Header {
+<style>
+    #map {
+        height: 500px;
+    }
+    
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body>nav {
+        visibility: hidden;
+    }
+</style>
+}
+
+@section Scripts {
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiETHqw4fyHZZPRMZYx2AD22eCrPhv8AU&callback=initMap">
+
+</script>
+}
