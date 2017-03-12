@@ -2,6 +2,7 @@
 var tooHot = '#ff0000';
 var justRight = '#14c92f';
 
+var bounds;
 var map;
 var columns = 2;
 var rows = 2;
@@ -17,8 +18,14 @@ function getRandomColorString() {
 }
 
 function updateColors(event) {
-    clearRectangles();
     createRectangles();
+}
+
+function updateSliders(event) {
+    columns = document.getElementById('cols').value;
+    rows = document.getElementById('rows').value;
+
+    loadWeathers();
 }
 
 function clearRectangles() {
@@ -29,7 +36,30 @@ function clearRectangles() {
     }
 }
 
+function loadWeathers() {
+    items = new Array(rows);
+
+    for (var i = 0; i < rows; ++i) {
+        items[i] = new Array(columns);
+    }
+
+    var promises = [];
+    for (var col = 0; col < columns; ++col) {
+        for (var row = 0; row < rows; ++row) {
+            promises.push(loadWeather(row, col));
+        }
+    }
+
+    Promise.all(promises).then(function () {
+        createRectangles();
+    }, function (err) {
+        // TODO - handle error
+    });
+}
+
 function createRectangles() {
+    clearRectangles();
+
     for (var col = 0; col < columns; ++col) {
         for (var row = 0; row < rows; ++row) {
             (function (row, col) {
@@ -81,7 +111,7 @@ function createRectangles() {
     }
 }
 
-function loadWeather(bounds, row, col) {
+function loadWeather(row, col) {
     var NE = bounds.getNorthEast();
     var SW = bounds.getSouthWest();
 
@@ -120,11 +150,13 @@ function loadWeather(bounds, row, col) {
                 return resolve(item);
             } else {
                 return reject(request.status);
+                // TODO - handle error
             }
         };
 
         request.onerror = function () {
             return reject("error?");
+            // TODO - handle error
         };
 
         request.send();
@@ -138,31 +170,21 @@ function initMap() {
     minTemp.addEventListener('change', updateColors)
     maxTemp.addEventListener('change', updateColors)
 
+    var rowSlider = document.getElementById('rows');
+    var colSlider = document.getElementById('cols');
+
+    rowSlider.addEventListener('change', updateSliders)
+    colSlider.addEventListener('change', updateSliders)
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 9,
         center: { lat: 34.038891, lng: -84.296173 },
         mapTypeId: 'terrain'
     });
 
-    items = new Array(rows);
-
-    for (var i = 0; i < rows; ++i) {
-        items[i] = new Array(columns);
-    }
-
     google.maps.event.addListenerOnce(map, 'idle', function () {
-        var bounds = map.getBounds();
-        var promises = [];
-        for (var col = 0; col < columns; ++col) {
-            for (var row = 0; row < rows; ++row) {
-                promises.push(loadWeather(bounds, row, col));
-            }
-        }
+        bounds = map.getBounds();
 
-        Promise.all(promises).then(function () {
-            createRectangles();
-        }, function (err) {
-            // error occurred
-        });
+        loadWeathers();
     });
 }
