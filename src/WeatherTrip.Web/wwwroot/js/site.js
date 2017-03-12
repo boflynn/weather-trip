@@ -247,4 +247,10 @@ function initMapWithPosition(latitude, longitude, zoom) {
         loadWeathers();
     });
 
+    google.maps.event.addListener(map, 'zoom_changed', function () {
+        bounds = map.getBounds();
+
+        loadWeathers();
+    });
+
 }
