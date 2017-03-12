@@ -13,7 +13,7 @@ namespace WeatherTrip.Web.Controllers
     {
         private string _apiBaseUrl = "http://api.apixu.com";
         private string _apiUrl = "/v1/forecast.json?key={0}&q={1}&days={2}";
-        private int _days = 1;
+        private int _days = 10;
         private HttpClient _client;
         private readonly Options _options;
 
