@@ -240,4 +240,11 @@ function initMapWithPosition(latitude, longitude, zoom) {
 
         loadWeathers();
     });
+
+    google.maps.event.addListener(map, 'dragend', function () {
+        bounds = map.getBounds();
+
+        loadWeathers();
+    });
+
 }
