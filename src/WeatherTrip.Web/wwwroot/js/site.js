@@ -4,8 +4,7 @@ var justRight = '#14c92f';
 
 var bounds;
 var map;
-var columns = 2;
-var rows = 2;
+var splits = 2;
 var items;
 var images = [];
 var rectangles = [];
@@ -31,8 +30,7 @@ function updateColors(event) {
 }
 
 function updateSliders(event) {
-    columns = document.getElementById('cols').value;
-    rows = document.getElementById('rows').value;
+    splits = document.getElementById('splits').value;
 
     loadWeathers();
 }
@@ -52,15 +50,15 @@ function clearRectangles() {
 }
 
 function loadWeathers() {
-    items = new Array(rows);
+    items = new Array(splits);
 
-    for (var i = 0; i < rows; ++i) {
-        items[i] = new Array(columns);
+    for (var i = 0; i < splits; ++i) {
+        items[i] = new Array(splits);
     }
 
     var promises = [];
-    for (var col = 0; col < columns; ++col) {
-        for (var row = 0; row < rows; ++row) {
+    for (var col = 0; col < splits; ++col) {
+        for (var row = 0; row < splits; ++row) {
             promises.push(loadWeather(row, col));
         }
     }
@@ -78,8 +76,8 @@ function createRectangles() {
 
     document.getElementById('date').innerText = date;
 
-    for (var col = 0; col < columns; ++col) {
-        for (var row = 0; row < rows; ++row) {
+    for (var col = 0; col < splits; ++col) {
+        for (var row = 0; row < splits; ++row) {
             (function (row, col) {
                 var item = items[row][col];
 
@@ -153,10 +151,10 @@ function loadWeather(row, col) {
     var right = NE.lng();
 
     return new Promise(function (resolve, reject) {
-        var rectTop = top + (bottom - top) * row / rows;
-        var rectBottom = top + (bottom - top) * (row + 1) / rows;
-        var rectLeft = left + (right - left) * col / columns;
-        var rectRight = left + (right - left) * (col + 1) / columns;
+        var rectTop = top + (bottom - top) * row / splits;
+        var rectBottom = top + (bottom - top) * (row + 1) / splits;
+        var rectLeft = left + (right - left) * col / splits;
+        var rectRight = left + (right - left) * (col + 1) / splits;
 
         var centerLat = (rectTop + rectBottom) / 2;
         var centerLng = (rectLeft + rectRight) / 2;
@@ -218,11 +216,9 @@ function initMapWithPosition(latitude, longitude, zoom) {
     minTemp.addEventListener('change', updateColors)
     maxTemp.addEventListener('change', updateColors)
 
-    var rowSlider = document.getElementById('rows');
-    var colSlider = document.getElementById('cols');
+    var splitsSlider = document.getElementById('splits');
 
-    rowSlider.addEventListener('change', updateSliders)
-    colSlider.addEventListener('change', updateSliders)
+    splitsSlider.addEventListener('change', updateSliders)
 
     var daysSlider = document.getElementById('days');
 
